@@ -25,11 +25,8 @@ export default function ErrorScreen({
         <p className="text-xl mt-2">{title}</p>
         <p className="text-gray-500 mt-2">{message}</p>
         {is404 ? (
-          <Link
-            href="/"
-            className="mt-6 inline-block text-sm text-gray-900 bg-PrimaryColor px-6 py-2 rounded-full transition-all duration-200 hover:bg-yellow-600"
-          >
-            메인으로 돌아가기
+          <Link href="/" className="mt-6 inline-block">
+            <button className="btn">메인으로 돌아가기</button>
           </Link>
         ) : (
           <button onClick={() => reset()}>다시 시도하기</button>

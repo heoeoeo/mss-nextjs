@@ -5,3 +5,15 @@
 body {
   overflow-x: hidden;
 }
+
+.notion-page-icon-inline {
+  display: none !important;
+}
+
+.toggle:checked,
+.toggle[aria-checked="true"] {
+  background-image: none;
+  --handleoffsetcalculator: var(--handleoffset);
+  --tw-text-opacity: 1;
+  color: green; /* 초록색으로 변경 */
+}

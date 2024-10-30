@@ -24,6 +24,7 @@ export default function DaumPostModal({
   onComplete,
 }: DaumPostModalProps) {
   const handleComplete = (data: any) => {
+    console.log(data);
     const address = data.address; // 선택된 전체 주소
     const sigungu = data.sigungu; // 시군구
     const sido = data.sido; // 시도

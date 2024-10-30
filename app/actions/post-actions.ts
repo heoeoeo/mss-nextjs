@@ -148,3 +148,20 @@ export async function deleteBizOffDays(off_day) {
     .eq("off_day", off_day)
     .eq("user_id", user_id);
 }
+
+export async function updateBizOpenStatus(new_open_status: boolean) {
+  const supabase = await createServerSupabaseClient();
+  const user_id = await getUserId(supabase);
+
+  const { data, error } = await supabase
+    .from("biz_posts")
+    .update({ is_open: new_open_status })
+    .eq("user_id", user_id);
+
+  if (error) {
+    console.error("supabase update 실패: " + error.message);
+    return null;
+  }
+
+  return data;
+}

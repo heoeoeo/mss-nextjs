@@ -11,8 +11,8 @@ export function SideBar() {
     { href: "/", label: "메인" },
     { href: "/post", label: "광고글 관리" },
     { href: "/message", label: "메시지", badge: "120" },
-    { href: "/biz", label: "사업자 정보 관리" },
     { href: "/setting", label: "설정" },
+    { href: "/cs", label: "고객센터" },
   ];
 
   return (
@@ -20,7 +20,13 @@ export function SideBar() {
       <div>
         <div className="mb-4 p-4 flex justify-center">
           <div className="relative w-2/3 h-[60px]">
-            <Image src="/images/logos/logo.png" fill sizes="33vw" alt="로고" />
+            <Image
+              src="/images/logos/logo.png"
+              fill
+              sizes="33vw"
+              alt="로고"
+              priority
+            />
           </div>
         </div>
 

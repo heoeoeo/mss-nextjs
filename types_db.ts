@@ -57,21 +57,6 @@ export type Database = {
         }
         Relationships: []
       }
-      biz_off_days: {
-        Row: {
-          day_name: string
-          id: number
-        }
-        Insert: {
-          day_name: string
-          id?: number
-        }
-        Update: {
-          day_name?: string
-          id?: number
-        }
-        Relationships: []
-      }
       biz_parkings: {
         Row: {
           created_at: string
@@ -141,13 +126,6 @@ export type Database = {
             referencedRelation: "biz_parkings"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "biz_post_parkings_post_id_fkey1"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "biz_posts"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       biz_post_types: {
@@ -171,13 +149,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "biz_post_types_post_id_fkey"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "biz_posts"
-            referencedColumns: ["user_id"]
-          },
-          {
             foreignKeyName: "biz_post_types_type_id_fkey"
             columns: ["type_id"]
             isOneToOne: false
@@ -188,30 +159,24 @@ export type Database = {
       }
       biz_posts: {
         Row: {
-          ad_state: string
           created_at: string
-          end_time: string
-          event: string | null
-          notice: string | null
-          start_time: string
+          id: number
+          is_open: boolean
+          updated_at: string | null
           user_id: string
         }
         Insert: {
-          ad_state?: string
           created_at?: string
-          end_time: string
-          event?: string | null
-          notice?: string | null
-          start_time: string
+          id?: number
+          is_open?: boolean
+          updated_at?: string | null
           user_id?: string
         }
         Update: {
-          ad_state?: string
           created_at?: string
-          end_time?: string
-          event?: string | null
-          notice?: string | null
-          start_time?: string
+          id?: number
+          is_open?: boolean
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -220,37 +185,22 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          off_day_id: number
+          off_day: Database["public"]["Enums"]["\bclosed-days"]
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
-          off_day_id: number
+          off_day: Database["public"]["Enums"]["\bclosed-days"]
           user_id?: string
         }
         Update: {
           created_at?: string
           id?: number
-          off_day_id?: number
+          off_day?: Database["public"]["Enums"]["\bclosed-days"]
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "biz_posts_off_days_off_day_id_fkey"
-            columns: ["off_day_id"]
-            isOneToOne: false
-            referencedRelation: "biz_off_days"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "biz_posts_off_days_post_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "biz_posts"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       biz_price_time: {
         Row: {

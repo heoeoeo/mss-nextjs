@@ -3,7 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { createBrowserSupabaseClient } from "utils/supabase/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import HasAccount from "./hasAccount";
 import AuthLogo from "./AuthLogo";
 import OAuthSet from "./OAuthSet";

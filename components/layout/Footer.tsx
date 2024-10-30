@@ -8,10 +8,10 @@ export default function Footer() {
         {/* 첫째 줄 */}
         <div className="flex justify-center space-x-6">
           <span className="font-semibold">{company}</span>
-          <Link href="/terms" className="hover:underline">
+          <Link href="/terms/service" className="hover:underline">
             이용약관
           </Link>
-          <Link href="/privacy" className="hover:underline">
+          <Link href="/terms/privacy" className="hover:underline font-bold">
             개인정보처리방침
           </Link>
         </div>

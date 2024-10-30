@@ -1,3 +1,4 @@
+import Welcome from "components/main/commons/Welcome";
 import NoticeCard from "components/posts/notices/NoticeCard";
 import OffDaysCard from "components/posts/off-days/OffDaysCard";
 
@@ -5,11 +6,9 @@ const b_nm = "약손명가";
 
 export default function PostPage() {
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8 bg-white rounded-lg shadow-lg">
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="border-b border-gray-300 pb-6">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
-          {b_nm} 광고글 관리
-        </h1>
+        <Welcome biz_name={b_nm} comment="광고글 관리" />
         <p className="text-base text-gray-600 mt-3">
           공지사항과 이벤트, 코스명은 관리자{" "}
           <span className="text-blue-600 font-semibold">승인 후</span>{" "}

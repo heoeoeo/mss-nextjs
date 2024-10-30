@@ -56,8 +56,8 @@ export default async function MainLayout({
             <div className="md:hidden block">{/* <MobileSideBar /> */}</div>
 
             {/* 사이드바 옆에 children 영역을 배치 */}
-            <div className="ml-0 md:ml-[20rem] w-full md:p-4 py-4 bg-gray-50">
-              <div>{children}</div>
+            <div className="ml-0 md:ml-[20rem] w-full md:p-4 py-4 bg-gray-50 min-h-screen">
+              <div className="m-4 bg-white">{children}</div>
               {/* <PWaitModal /> */}
             </div>
           </div>
