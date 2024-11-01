@@ -1,11 +1,11 @@
 "use client";
 
+import useSupabase from "hooks/useSupabase";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { createBrowserSupabaseClient } from "utils/supabase/client";
 
 export default function AuthProvider({ accessToken, children }) {
-  const supabase = createBrowserSupabaseClient();
+  const supabase = useSupabase();
   const router = useRouter();
 
   useEffect(() => {

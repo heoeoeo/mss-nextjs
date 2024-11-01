@@ -6,13 +6,14 @@ import { manageBizNotice, getNoticeLogStatus } from "app/actions/post-actions";
 import Blank from "../commons/Blank";
 import TextSkeleton from "components/commons/TextSkeleton";
 import { useState } from "react";
+import { queryServerClient } from "utils/react-query/queryServerClient";
 
 export default function Notice() {
   const title = "공지사항";
   const [isEditing, setIsEditing] = useState(false);
   const [contents, setContents] = useState("");
   const [logStatus, setLogStatus] = useState(null);
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const noticeQuery = useQuery({
     queryKey: ["notice"],
@@ -43,7 +44,7 @@ export default function Notice() {
       if (data.notice) {
         setContents(data.notice.contents);
         setIsEditing(false);
-        queryClient.invalidateQueries(["notice", "noticeLogStatus"]);
+        queryServerClient.invalidateQueries(["notice", "noticeLogStatus"]);
         alert("변경 신청이 완료되었습니다.");
       }
     },

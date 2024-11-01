@@ -2,7 +2,6 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import { createBrowserSupabaseClient } from "utils/supabase/client";
 import { redirect } from "next/navigation";
 import { SCHEMA_YUP_SIGN_IN } from "constants/yup/Schema";
 import { AuthForm } from "constants/types/custom";
@@ -11,9 +10,10 @@ import SignInUpButton from "./SignInUpButton";
 import OAuthSet from "./OAuthSet";
 import HasAccount from "./hasAccount";
 import AuthLogo from "./AuthLogo";
+import useSupabase from "hooks/useSupabase";
 
 export default function SignIn({ view, setView }) {
-  const supabase = createBrowserSupabaseClient();
+  const supabase = useSupabase();
 
   const signinMutation = useMutation({
     mutationFn: async ({ email, password }: AuthForm) => {

@@ -2,7 +2,6 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import { createBrowserSupabaseClient } from "utils/supabase/client";
 import { useState } from "react";
 import HasAccount from "./hasAccount";
 import AuthLogo from "./AuthLogo";
@@ -11,10 +10,11 @@ import { AuthForm } from "constants/types/custom";
 import AuthInput from "./AuthInput";
 import SignInUpButton from "./SignInUpButton";
 import { SCHEMA_YUP_SIGN_UP } from "constants/yup/Schema";
+import useSupabase from "hooks/useSupabase";
 
 export default function SignUp({ view, setView }) {
   const [confirmState, setConfirmState] = useState(false);
-  const supabase = createBrowserSupabaseClient();
+  const supabase = useSupabase();
 
   // Supabase 회원가입 기능
   const signupMutation = useMutation({
@@ -69,6 +69,13 @@ export default function SignUp({ view, setView }) {
               type="password"
               isPending={signupMutation.isPending}
             />
+            <div>
+              서비스 이용 약관 동의
+              <br />
+              개인정보 수집 및 이용에 관한 동의
+              <br />
+              14세미만이아닙니다.
+            </div>
             <SignInUpButton view={view} isPending={signupMutation.isPending} />
           </Form>
         )}

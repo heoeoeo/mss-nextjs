@@ -2,41 +2,38 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { updateBizOpenStatus } from "app/actions/post-actions";
-import { useState } from "react";
-import { createBrowserSupabaseClient } from "utils/supabase/client";
+import useOpenStatusQuery from "hooks/useOpenStatusQuery";
+import useSupabase from "hooks/useSupabase";
 
 type ShopOpenToggleProps = {
-  initialIsOpen: boolean;
+  user_id: string;
 };
-export default function ShopOpenToggle({ initialIsOpen }: ShopOpenToggleProps) {
-  const [isOpen, setIsOpen] = useState(initialIsOpen);
-
-  const openStatusQuery = useQuery({
-    queryKey: ["openStatus"],
-    queryFn: async () => {},
-  });
+export default function ShopOpenToggle({ user_id }: ShopOpenToggleProps) {
+  const supabase = useSupabase();
+  const isOpenQuery = useQuery(useOpenStatusQuery({ supabase, user_id }));
+  console.log(isOpenQuery.data.is_open);
+  const isOpen = isOpenQuery.data.is_open;
 
   const updateBizOpenStatusMutation = useMutation({
     mutationFn: async (new_open_status: boolean) => {
       const result = await updateBizOpenStatus(new_open_status);
-      console.log(result);
+      console.log("re", result);
     },
     onSuccess: () => {
       console.log("success");
+      isOpenQuery.refetch();
     },
     onError: (err) => {
       console.error(err.message);
     },
   });
   async function handleToggleChange() {
-    const supabase = await createBrowserSupabaseClient();
-
     const confirmMessage = isOpen
       ? "영업을 종료하시겠습니까?"
       : "영업을 시작하시겠습니까?";
     if (confirm(confirmMessage)) {
       updateBizOpenStatusMutation.mutate(!isOpen);
-      setIsOpen(!isOpen);
+      // isOpenQuery.refetch();
     }
   }
 
