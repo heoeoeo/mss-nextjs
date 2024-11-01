@@ -1,8 +1,5 @@
 import { TypedSupabaseClient } from "utils/supabase/client";
 
-/** 유저 인증 관련 함수 모아놓은 파일
- * @returns { data, AuthErorr }
- */
 const path = "app/actions/dbs/auth.ts";
 
 export async function getUser(supabase: TypedSupabaseClient) {
@@ -21,6 +18,7 @@ export async function getUserId(supabase: TypedSupabaseClient) {
   return user.id;
 }
 
+// TODO 사용할지말지모름
 export async function getUserRole(supabase: TypedSupabaseClient) {
   const {
     data: { user },

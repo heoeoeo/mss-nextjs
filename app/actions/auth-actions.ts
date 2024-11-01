@@ -8,6 +8,8 @@ import { BizBaseInfoInsert, BizTotalInfosInsert } from "constants/types/db";
 import { updateBizRole } from "./dbs/update";
 import { getUserId, getUserRole } from "./dbs/auth";
 
+const path = "app/actions/auth-actions.ts";
+
 /**
  * 공공데이터포털 통해 사업자 정보 검증하는 api
  *
@@ -21,26 +23,37 @@ import { getUserId, getUserRole } from "./dbs/auth";
  * message: 유저에게 보여줄 상태에 대한 메시지
  */
 export async function verifyBizWithAllInfo(bizBaseInfo: BizBaseInfoInsert) {
-  const supabase = await createServerSupabaseClient();
-  // 데이터베이스에서 사업자 정보가 이미 등록되었는지 확인
-  const isRegistered = await isBizRegistered(bizBaseInfo.b_no, supabase);
-  if (isRegistered)
-    return { valid: false, message: "이미 등록된 사업자 정보가 있습니다." };
+  try {
+    const supabase = await createServerSupabaseClient();
+    // 데이터베이스에서 사업자 정보가 이미 등록되었는지 확인
+    const isRegistered = await isBizRegistered(bizBaseInfo.b_no, supabase);
+    if (isRegistered)
+      return { valid: false, message: "이미 등록된 사업자 정보가 있습니다." };
 
-  // 공공데이터포털 API를 통해 사업자 정보 검증
-  const isValid = await validateBizWithAPI(bizBaseInfo);
-  if (!isValid)
-    return { valid: false, message: "사업자 정보가 일치하지 않습니다." };
-  console.log(isValid);
-  // 데이터베이스에 신규 사업자 정보 삽입
-  const isInsertOk = await insertBizInfo(bizBaseInfo, supabase);
+    // 공공데이터포털 API를 통해 사업자 정보 검증
+    const isValid = await validateBizWithAPI(bizBaseInfo);
+    if (!isValid)
+      return { valid: false, message: "사업자 정보가 일치하지 않습니다." };
+    console.log(isValid);
+    // 데이터베이스에 신규 사업자 정보 삽입
+    const isInsertOk = await insertBizInfo(bizBaseInfo, supabase);
 
-  if (isInsertOk) return { valid: true, message: "사업자 정보가 일치합니다." };
+    if (isInsertOk)
+      return { valid: true, message: "사업자 정보가 일치합니다." };
 
-  return {
-    valid: false,
-    message: "문제가 발생하였습니다. 다시 시도하거나 고객센터로 문의바랍니다.",
-  };
+    return {
+      valid: false,
+      message:
+        "문제가 발생하였습니다. 다시 시도하거나 고객센터로 문의바랍니다.",
+    };
+  } catch (e) {
+    console.error(`${path}\nverifyBizWithAllInfo\n`, e);
+    return {
+      valid: false,
+      message:
+        "문제가 발생하였습니다. 다시 시도하거나 고객센터로 문의바랍니다.",
+    };
+  }
 }
 
 /** 사업자의 주소, 휴대폰, 인근역 정보 insert */
