@@ -71,7 +71,7 @@ export async function addBizMoreInfos(bizTotalInfo: BizTotalInfosInsert) {
         valid: false,
         message: "추가 사업자 정보 삽입에 실패하였습니다.",
       };
-    console.log(isInsertOk);
+
     const isGetSignedUrlOk = await getSignedUrl(user_id, supabase);
     if (!isGetSignedUrlOk)
       return {
@@ -92,18 +92,25 @@ export async function addBizMoreInfos(bizTotalInfo: BizTotalInfosInsert) {
   }
 }
 
-/** 유저 승인 정보 가져오는 함수 */
+/** 유저 승인 정보 가져오는 함수
+ *
+ * @returns { valid: boolean, approval: "승인" | "대기" | "반려"}
+ */
 export async function getApprovalStatus() {
-  const supabase = await createServerSupabaseClient();
-  const user_id = await getUserId(supabase);
-  if (!user_id) return false;
+  try {
+    const supabase = await createServerSupabaseClient();
+    const user_id = await getUserId(supabase);
+    if (!user_id) return false;
 
-  const { data, error } = await supabase
-    .from("biz_total_infos")
-    .select("approval")
-    .eq("id", user_id);
-  console.log("데이타", data);
-  console.log("에러", error);
+    const { data } = await supabase
+      .from("biz_total_infos")
+      .select("approval")
+      .eq("id", user_id)
+      .throwOnError();
 
-  return { approval: data[0]?.approval };
+    return { valid: true, approval: data[0]?.approval };
+  } catch (e) {
+    console.error(`${path}\ngetApprovalStatus\n`, e);
+    return { valid: false, approval: null };
+  }
 }
