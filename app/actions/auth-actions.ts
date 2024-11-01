@@ -58,35 +58,38 @@ export async function verifyBizWithAllInfo(bizBaseInfo: BizBaseInfoInsert) {
 
 /** 사업자의 주소, 휴대폰, 인근역 정보 insert */
 export async function addBizMoreInfos(bizTotalInfo: BizTotalInfosInsert) {
-  console.log(bizTotalInfo);
-  const supabase = await createServerSupabaseClient();
+  try {
+    const supabase = await createServerSupabaseClient();
 
-  const user_id = await getUserId(supabase);
-  if (!user_id)
-    return { valid: false, message: "로그인 정보를 찾을 수 없습니다." };
+    const user_id = await getUserId(supabase);
+    if (!user_id)
+      return { valid: false, message: "로그인 정보를 찾을 수 없습니다." };
 
-  const user_role = await getUserRole(supabase);
-  console.log("user role", user_role);
+    const isInsertOk = await insertBizTotalInfo(bizTotalInfo, supabase);
+    if (!isInsertOk)
+      return {
+        valid: false,
+        message: "추가 사업자 정보 삽입에 실패하였습니다.",
+      };
+    console.log(isInsertOk);
+    const isGetSignedUrlOk = await getSignedUrl(user_id, supabase);
+    if (!isGetSignedUrlOk)
+      return {
+        valid: false,
+        message: "서명 파일 url을 가져오는데 실패하였습니다.",
+      };
 
-  const isInsertOk = await insertBizTotalInfo(bizTotalInfo, supabase);
-  if (!isInsertOk)
-    return { valid: false, message: "추가 사업자 정보 삽입에 실패하였습니다." };
-  console.log(isInsertOk);
-  const isGetSignedUrlOk = await getSignedUrl(user_id, supabase);
-  if (!isGetSignedUrlOk)
     return {
-      valid: false,
-      message: "서명 파일 url을 가져오는데 실패하였습니다.",
+      valid: true,
+      message: "추가 사업자 정보가 성공적으로 등록되었습니다.",
     };
-
-  // const isUpdatedBizRole = await updateBizRole(user_id, supabase);
-  // if (!isUpdatedBizRole)
-  //   return { valid: false, message: "사업자 역할 업데이트에 실패하였습니다." };
-
-  return {
-    valid: true,
-    message: "추가 사업자 정보가 성공적으로 등록되었습니다.",
-  };
+  } catch (e) {
+    console.error(`${path}\naddBizMoreInfos\n`, e);
+    return {
+      valid: true,
+      message: "추가 사업자 정보가 성공적으로 등록되었습니다.",
+    };
+  }
 }
 
 /** 유저 승인 정보 가져오는 함수 */
