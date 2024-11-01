@@ -2,46 +2,37 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { BizBaseInfoInsert, BizTotalInfosInsert } from "constants/types/db";
 import { formatDateString } from "utils/format/date-format";
 
-/** biz_base_info에 데이터 삽입하는 함수 (isBizRegistered 함수에서 데이터가 있으면(true) 사용 ) */
+/** biz_base_info에 데이터 삽입하는 함수 성공하면 true 반환*/
 export async function insertBizInfo(
   values: BizBaseInfoInsert,
   supabase: SupabaseClient
 ) {
   const formattedDate = formatDateString(values.start_dt);
-  const { error } = await supabase
+  await supabase
     .from("biz_base_info")
-    .insert([{ ...values, start_dt: formattedDate }]);
-
-  if (error) {
-    console.error("supabase insert 실패: " + error.message);
-    return false;
-  }
+    .insert([{ ...values, start_dt: formattedDate }])
+    .throwOnError();
 
   return true;
 }
 
-/** biz_total_infos에 데이터 삽입하는 함수 */
+/** biz_total_infos에 데이터 삽입하는 함수 성공하면 true*/
 export async function insertBizTotalInfo(
   bizTotalInfo: BizTotalInfosInsert,
   supabase: SupabaseClient
 ) {
-  const { error } = await supabase
-    .from("biz_total_infos")
-    .insert([bizTotalInfo]);
-
-  if (error) {
-    console.error("s1upabase insert 실패: " + error.message);
-    return false;
-  }
+  await supabase.from("biz_total_infos").insert([bizTotalInfo]).throwOnError();
 
   return true;
 }
 
-/** 스토리지에 사업자등록증 업로드하는 함수 */
+/** 스토리지에 사업자등록증 업로드하는 함수
+ * @todo 에러처리
+ */
 export async function upsertBizCert(
+  supabase: SupabaseClient,
   user_id: string,
-  biz_cert: File,
-  supabase: SupabaseClient
+  biz_cert: File
 ) {
   const { data, error } = await supabase.storage
     .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET)

@@ -5,8 +5,7 @@ import { validateBizWithAPI } from "./apis/validateBizInfo";
 import { insertBizInfo, insertBizTotalInfo } from "./dbs/insert";
 import { createServerSupabaseClient } from "utils/supabase/server";
 import { BizBaseInfoInsert, BizTotalInfosInsert } from "constants/types/db";
-import { updateBizRole } from "./dbs/update";
-import { getUserId, getUserRole } from "./dbs/auth";
+import { getUserId } from "./dbs/auth";
 
 const path = "app/actions/auth-actions.ts";
 
@@ -26,7 +25,7 @@ export async function verifyBizWithAllInfo(bizBaseInfo: BizBaseInfoInsert) {
   try {
     const supabase = await createServerSupabaseClient();
     // 데이터베이스에서 사업자 정보가 이미 등록되었는지 확인
-    const isRegistered = await isBizRegistered(bizBaseInfo.b_no, supabase);
+    const isRegistered = await isBizRegistered(supabase, bizBaseInfo.b_no);
     if (isRegistered)
       return { valid: false, message: "이미 등록된 사업자 정보가 있습니다." };
 
@@ -72,7 +71,7 @@ export async function addBizMoreInfos(bizTotalInfo: BizTotalInfosInsert) {
         message: "추가 사업자 정보 삽입에 실패하였습니다.",
       };
 
-    const isGetSignedUrlOk = await getSignedUrl(user_id, supabase);
+    const isGetSignedUrlOk = await getSignedUrl(supabase, user_id);
     if (!isGetSignedUrlOk)
       return {
         valid: false,
@@ -86,8 +85,8 @@ export async function addBizMoreInfos(bizTotalInfo: BizTotalInfosInsert) {
   } catch (e) {
     console.error(`${path}\naddBizMoreInfos\n`, e);
     return {
-      valid: true,
-      message: "추가 사업자 정보가 성공적으로 등록되었습니다.",
+      valid: false,
+      message: "추가 사업자 정보등록에 실패하였습니다.",
     };
   }
 }

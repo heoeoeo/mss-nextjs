@@ -1,29 +1,27 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { ActionsResponseType } from "constants/types/custom";
 
-/** 사업자등록번호를 받아서 이미 biz_base_info에 데이터가 있는지 확인하는 함수 */
-export async function isBizRegistered(b_no: string, supabase: SupabaseClient) {
-  const { data, error } = await supabase
+/** 사업자등록번호를 받아서 이미 biz_base_info에 데이터가 있는지 확인하는 함수
+ * @returns {boolean} - 이미 등록된 사업자이면 true, 아니면 false
+ */
+export async function isBizRegistered(supabase: SupabaseClient, b_no: string) {
+  const { data } = await supabase
     .from("biz_base_info")
     .select("*", { count: "exact" })
-    .eq("b_no", b_no);
-
-  if (error || !data) {
-    console.error("supabase select 실패: " + error.message);
-    return false;
-  }
+    .eq("b_no", b_no)
+    .throwOnError();
 
   return data.length !== 0;
 }
 
 /** 스토리지에 있는 파일 signedUrl 가져오는 함수*/
-export async function getSignedUrl(id: string, supabase: SupabaseClient) {
+export async function getSignedUrl(supabase: SupabaseClient, user_id: string) {
   const {
     data: { signedUrl },
     error,
   } = await supabase.storage
     .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET)
-    .createSignedUrl(`licenses/${id}`, 60);
+    .createSignedUrl(`licenses/${user_id}`, 60);
 
   if (error || !signedUrl) {
     console.error("supabase signedUrl 실패: " + error.message);
