@@ -14,7 +14,10 @@ function useOpenStatusQuery({
     return getIsOpenById(supabase, user_id).then((result) => result.data);
   };
 
-  return { queryKey, queryFn };
+  const staleTime = Infinity;
+  const cacheTime = Infinity;
+
+  return { queryKey, queryFn, staleTime, cacheTime };
 }
 
 export default useOpenStatusQuery;

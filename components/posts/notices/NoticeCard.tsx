@@ -13,7 +13,6 @@ export default function Notice() {
   const [isEditing, setIsEditing] = useState(false);
   const [contents, setContents] = useState("");
   const [logStatus, setLogStatus] = useState(null);
-  // const queryClient = useQueryClient();
 
   const noticeQuery = useQuery({
     queryKey: ["notice"],

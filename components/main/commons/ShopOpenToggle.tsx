@@ -33,7 +33,6 @@ export default function ShopOpenToggle({ user_id }: ShopOpenToggleProps) {
       : "영업을 시작하시겠습니까?";
     if (confirm(confirmMessage)) {
       updateBizOpenStatusMutation.mutate(!isOpen);
-      // isOpenQuery.refetch();
     }
   }
 
