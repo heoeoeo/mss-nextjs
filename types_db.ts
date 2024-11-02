@@ -7,6 +7,52 @@ export type Json =
   | Json[]
 
 export type Database = {
+  audit_log: {
+    Tables: {
+      biz_notice_logs: {
+        Row: {
+          change_reason: string
+          changed_at: string
+          changed_by: string
+          contents: string
+          log_id: number
+          notice_id: number
+          status: Database["public"]["Enums"]["STATUS"]
+        }
+        Insert: {
+          change_reason?: string
+          changed_at?: string
+          changed_by?: string
+          contents: string
+          log_id?: number
+          notice_id: number
+          status?: Database["public"]["Enums"]["STATUS"]
+        }
+        Update: {
+          change_reason?: string
+          changed_at?: string
+          changed_by?: string
+          contents?: string
+          log_id?: number
+          notice_id?: number
+          status?: Database["public"]["Enums"]["STATUS"]
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       biz_base_info: {

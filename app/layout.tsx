@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider } from "config/material-tailwind-theme-provider";
-import ReactQueryClientProvider from "config/ReactQueryClientProvider";
-import RecoilProvider from "config/RecoilProvider";
 import Auth from "components/auth";
 import MainLayout from "components/layout/MainLayout";
 import { createServerSupabaseClient } from "utils/supabase/server";
-import AuthProvider from "config/authProvider";
 import AppProvider from "config/AppProvider";
 import Footer from "components/layout/Footer";
 
